@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>班级各科评分表生成器</title>
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Excel 评分工具</p>
+        <h1>班级各科评分表生成器</h1>
+      </div>
+      <div class="privacy-badge">本地处理</div>
+    </header>
+
+    <main class="app-shell">
+      <section class="workspace">
+        <div class="upload-panel" id="dropZone">
+          <div class="upload-copy">
+            <h2>上传成绩表</h2>
+            <p>支持一个或多个 `.xlsx` 文件，成绩表需包含县区、学校、班级、姓名和各科成绩列。</p>
+          </div>
+          <label class="file-picker">
+            <input id="fileInput" type="file" accept=".xlsx,.xls" multiple />
+            <span>选择 Excel</span>
+          </label>
+        </div>
+
+        <div class="toolbar">
+          <button class="primary-action" id="runButton" type="button">生成评分表</button>
+          <button class="ghost-action" id="clearButton" type="button">清空</button>
+          <span id="statusText" class="status-text">等待上传</span>
+        </div>
+
+        <div id="fileList" class="file-list" aria-live="polite"></div>
+        <div id="results" class="results"></div>
+      </section>
+
+      <aside class="settings">
+        <section class="settings-section">
+          <h2>计算口径</h2>
+          <label>
+            目标县区
+            <input id="targetCounty" type="text" value="12小塘镇" />
+          </label>
+          <div class="setting-grid">
+            <label>
+              合格线
+              <input id="passRatio" type="number" min="0" max="100" step="1" value="60" />
+            </label>
+            <label>
+              优秀线
+              <input id="excellentRatio" type="number" min="0" max="100" step="1" value="85" />
+            </label>
+          </div>
+          <div class="setting-grid">
+            <label>
+              得分率权重
+              <input id="scoreWeight" type="number" min="0" step="1" value="40" />
+            </label>
+            <label>
+              合格率权重
+              <input id="passWeight" type="number" min="0" step="1" value="40" />
+            </label>
+            <label>
+              优秀率权重
+              <input id="excellentWeight" type="number" min="0" step="1" value="20" />
+            </label>
+          </div>
+        </section>
+
+        <section class="settings-section">
+          <h2>输出设置</h2>
+          <label>
+            年级
+            <input id="gradeName" type="text" value="六" />
+          </label>
+          <label>
+            默认办学系数
+            <input id="fallbackCoefficient" type="number" min="0" step="0.01" value="1" />
+          </label>
+          <label>
+            学校系数
+            <textarea id="coefficientRules" rows="10">小塘镇中心小学=1
+中小=1
+言栗完全小学=1.01
+言小=1.01
+红星=1.02
+留田=1.02
+清江=1.02
+渡头=1.02
+罗家=1.02
+万塘=1.02</textarea>
+          </label>
+        </section>
+
+        <section class="settings-section compact">
+          <h2>规则摘要</h2>
+          <dl>
+            <div><dt>得分率</dt><dd>平均分 ÷ 满分</dd></div>
+            <div><dt>合格率</dt><dd>达到合格线人数 ÷ 参考人数</dd></div>
+            <div><dt>优秀率</dt><dd>达到优秀线人数 ÷ 参考人数</dd></div>
+            <div><dt>计分</dt><dd>各率按最高值归一后加权</dd></div>
+          </dl>
+        </section>
+      </aside>
+    </main>
+
+    <template id="resultTemplate">
+      <article class="result-item">
+        <div class="result-head">
+          <div>
+            <h3></h3>
+            <p class="result-meta"></p>
+          </div>
+          <button type="button" class="download-action">下载结果</button>
+        </div>
+        <div class="stats-row"></div>
+        <div class="table-wrap">
+          <table>
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </article>
+    </template>
+
+    <script type="module" src="assets/app.js"></script>
+  </body>
+</html>

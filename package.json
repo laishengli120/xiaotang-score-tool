@@ -1,0 +1,10 @@
+{
+  "name": "xiaotang-score-tool",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "serve": "python3 -m http.server 4173",
+    "check": "node --check assets/scoring-core.js && node --check assets/app.js"
+  }
+}
